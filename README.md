@@ -10,13 +10,16 @@ This project is a Zerodha-inspired trading platform built using React. It featur
 🖥️ Responsive UI – Optimized for desktop and mobile views</br>
 🗂️ Modular Code Structure – Clean, reusable, and scalable components</br>
 🛠️ Database Integration – To store user data and market information</br>
-🛠️ Tech Stack</br>
+🛠️ Tech Stack </br>
 
 Frontend: React, JavaScript, HTML5, CSS3</br>
-Backend (Optional): Node.js, Express (if applicable)</br>
+Backend : Node.js, Express</br>
 Database: MongoDB / any DB</br>
 Tools: Git, VS Code, React Router</br>
+</br>
 📸 Screenshots.</br>
+</br>
+<img width="1440" alt="Screenshot 2025-05-02 at 7 46 01 PM" src="https://github.com/user-attachments/assets/e0397ec3-cffd-4dfd-a328-c454f8b5875e" /></br>
 
 Live Site URL (if deployed)</br>
 📂 Installation
