@@ -18,6 +18,8 @@ Database: MongoDB / Firebase / any DB used
 Tools: Git, VS Code, React Router
 📸 Screenshots.
 
+Live Site URL (if deployed)
+📂 Installation
 
 git clone https://github.com/yourusername/zerodha-clone.git
 
