@@ -20,8 +20,11 @@ Tools: Git, VS Code, React Router
 
 
 git clone https://github.com/yourusername/zerodha-clone.git
+
 cd zerodha-clone
+
 npm install
+
 npm start
 
 
