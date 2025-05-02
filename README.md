@@ -16,18 +16,15 @@ Frontend: React, JavaScript, HTML5, CSS3
 Backend (Optional): Node.js, Express (if applicable)
 Database: MongoDB / Firebase / any DB used
 Tools: Git, VS Code, React Router
-📸 Screenshots
+📸 Screenshots.
 
-(Add a few screenshots or a demo GIF here)
-🔗 Live Demo
-
-Live Site URL (if deployed)
-📂 Installation
 
 git clone https://github.com/yourusername/zerodha-clone.git
 cd zerodha-clone
 npm install
 npm start
+
+
 🙌 Acknowledgements
 
 Inspired by Zerodha for UI and core feature ideas.
