@@ -25,7 +25,7 @@ Tools: Git, VS Code, React Router</br>
 
 <!--- Live Site URL (if deployed)</br> --->
 
-📂 Installation
+📂 Installation </br>
 git clone https://github.com/yourusername/zerodha-clone.git</br>
 cd zerodha-clone</br>
 npm install</br>
