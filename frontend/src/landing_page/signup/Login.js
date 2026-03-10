@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -26,8 +26,23 @@ function Login() {
       position: "top-center",
     });
 
+  const validateInput = () => {
+    // Simple email regex for validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      handleError("Please enter a valid email address.");
+      return false;
+    }
+    if (!password || password.length < 6) {
+      handleError("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateInput()) return;
     try {
       const { data } = await axios.post(
         "http://localhost:3002/login",

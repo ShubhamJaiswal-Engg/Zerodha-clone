@@ -27,8 +27,32 @@ function Signup() {
       position: "top-center",
     });
 
+  const validateInput = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/; // Alphanumeric, 3-20 chars
+    if (!email || !emailRegex.test(email)) {
+      handleError("Please enter a valid email address.");
+      return false;
+    }
+    if (!username || !usernameRegex.test(username)) {
+      handleError("Username must be 3-20 characters, letters, numbers, or underscores.");
+      return false;
+    }
+    if (!password || password.length < 6) {
+      handleError("Password must be at least 6 characters long.");
+      return false;
+    }
+    // Optionally, add more password checks: at least one number, one letter, etc.
+    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+      handleError("Password must contain at least one letter and one number.");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateInput()) return;
     try {
       const { data } = await axios.post(
         "http://localhost:3002/signup",
