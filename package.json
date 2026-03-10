@@ -1,0 +1,12 @@
+{
+  "name": "zerodha-clone-monorepo",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "dashboard",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=backend & npm run start --workspace=dashboard & npm run start --workspace=frontend"
+  }
+}
