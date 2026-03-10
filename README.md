@@ -19,11 +19,13 @@ Tools: Git, VS Code, React Router</br>
 </br>
 📸 Screenshots.</br>
 </br>
-<img width="1440" alt="Screenshot 2025-05-02 at 7 46 01 PM" src="https://github.com/user-attachments/assets/e0397ec3-cffd-4dfd-a328-c454f8b5875e" /></br>
+<img width="1440" alt="Zerodha" src="https://github.com/user-attachments/assets/e0397ec3-cffd-4dfd-a328-c454f8b5875e" /></br>
+<img width="1440" height="900" alt="Dashboard" src="https://github.com/user-attachments/assets/274f8d2f-4956-4f7a-bf59-54260d1ba941" />
 
-Live Site URL (if deployed)</br>
+
+<!--- Live Site URL (if deployed)</br> --->
+
 📂 Installation
-
 git clone https://github.com/yourusername/zerodha-clone.git</br>
 cd zerodha-clone</br>
 npm install</br>
