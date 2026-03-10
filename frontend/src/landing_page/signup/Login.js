@@ -58,7 +58,8 @@ function Login() {
         // localStorage.setItem("USERID", data.userId); // Save USERID in local storage
         setTimeout(() => {
           const userId = data.userId;
-          navigate(window.location.href = `http://localhost:3001/?UI=${userId}`);
+          window.open(`http://localhost:3001/?UI=${userId}`);
+          navigate('/');
         }, 1000);
       } else {
         handleError(message);
