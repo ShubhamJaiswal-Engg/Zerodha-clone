@@ -78,7 +78,6 @@ module.exports.NewOrder = async (req, res) => {
     time:  new Date().toLocaleString("en-IN"),
   });
 
-
   newOrder.save();
 
   res.send("Order saved!");
