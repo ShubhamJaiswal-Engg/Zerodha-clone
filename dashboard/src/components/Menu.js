@@ -1,5 +1,7 @@
 import React, { useState,useEffect} from "react";
+import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 
 
@@ -26,9 +28,32 @@ const Menu = () => {
   // console.log(userName);
   
   }, []);
-  const logOut = () => {
-    window.location.href = "http://localhost:3000";
-    window.close();
+  const logOut = async () => {
+    // window.location.href = "http://localhost:3000";
+    // window.close();
+// document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;";
+  // Optionally redirect or do other logout logic
+  // window.location.href = "http://localhost:3000";
+
+  //   const token = document.cookie
+  // .split('; ')
+  // .find(row => row.startsWith('token='))
+  // ?.split('=')[1];
+  // console.log(token);
+ 
+
+const token = document.cookie
+  .split('; ')
+  .find(row => row.startsWith('token='))
+  ?.split('=')[1];
+
+if (token) {
+  const decoded = jwtDecode(token);
+  console.log(decoded); // { id: "...", iat: ..., exp: ... }
+  const {data} = await axios.get(`http://localhost:3002/api/user/${decoded.id}`)
+  console.log(data);
+  // You can now use decoded.id or other data
+}
   };
   return (
     <div className="menu-container">

@@ -1,4 +1,5 @@
 const User = require("../model/userModel");
+
 const {OrdersModel} = require("../model/OrdersModel");
 const { HoldingsModel } = require("../model/HoldingsModel");
 const { PositionsModel } = require("../model/PositonsModel");
@@ -15,12 +16,16 @@ module.exports.Signup = async (req, res, next) => {
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
-      withCredentials: true,
       httpOnly: false,
+      secure: false, // set to true if using HTTPS
+      sameSite: "lax", // or "none" if using HTTPS
+      domain: "localhost",
+      path: "/",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
     });
     res
       .status(201)
-      .json({ message: "User signed in successfully", success: true, user, userId: user.username, });
+      .json({ message: "User signed in successfully", success: true});
     next();
   } catch (error) {
     console.error(error);
@@ -43,10 +48,14 @@ module.exports.Login = async (req, res, next) => {
       }
        const token = createSecretToken(user._id);
        res.cookie("token", token, {
-         withCredentials: true,
          httpOnly: false,
+         secure: false, // set to true if using HTTPS
+         sameSite: "lax", // or "none" if using HTTPS
+         domain: "localhost",
+         path: "/",
+         expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day expiry
        });
-       res.status(201).json({ message: "User logged in successfully", success: true,userId: user.username,  });// Add userId here
+       res.status(201).json({ message: "User logged in successfully", success: true});// Add userId here
        next()
     } catch (error) {
       console.error(error);

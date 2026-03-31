@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
+const User = require("./model/userModel");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -31,6 +32,12 @@ const uri = process.env.MONGO_URL;
 
 mongoose.connect(uri).then(() => console.log("MongoDB is  connected successfully"))
 .catch((err) => console.error(err));
+
+app.get('/api/user/:id', async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json(user);
+});
 
 app.use("/", authRoute);
 
