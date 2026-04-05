@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 function Login() {
-  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -55,12 +54,10 @@ function Login() {
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-        // localStorage.setItem("USERID", data.userId); // Save USERID in local storage
         setTimeout(() => {
-          const userId = data.userId;
-          window.open(`http://localhost:3001/?UI=${userId}`);
-          navigate('/');
-        }, 1000);
+          // Same-tab redirect to the dashboard app
+          window.location.assign("http://localhost:3001");
+        }, 1500);
       } else {
         handleError(message);
       }

@@ -1,7 +1,5 @@
 import React, { useState,useEffect} from "react";
-import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 
 
@@ -27,23 +25,24 @@ const Menu = () => {
   // console.log(userName);
   
   }, []);
-  const logOut = async () => {
-    // window.location.href = "http://localhost:3000";
-    // window.close();
-// document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;";
 
-const token = document.cookie
-  .split('; ')
-  .find(row => row.startsWith('token='))
-  ?.split('=')[1];
+  const deleteCookie = (name) => {
+    const expires = "Thu, 01 Jan 1970 00:00:00 GMT";
+    const encodedName = encodeURIComponent(name);
+    const base = `${encodedName}=; expires=${expires}; Max-Age=0; path=/; SameSite=Lax`;
 
-if (token) {
-  const decoded = jwtDecode(token);
-  console.log(decoded); // { id: "...", iat: ..., exp: ... }
-  const {data} = await axios.get(`http://localhost:3002/api/user/${decoded.id}`)
-  console.log(data);
-  // You can now use decoded.id or other data
-}
+    // If the cookie was set without `domain`, this clears it.
+    document.cookie = base;
+
+    // Your backend sets `domain=localhost`, so clear that variant too.
+    document.cookie = `${base}; domain=localhost`;
+  };
+
+  const logOut = () => {
+    deleteCookie("token");
+
+    // Redirect is the reliable logout UX in browsers.
+    window.location.replace("http://localhost:3000");
   };
   return (
     <div className="menu-container">
