@@ -9,7 +9,6 @@ const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("Guest");
-  // const [count, setCount] = useState("");
  
 
   const handleMenuClick = (index) => {
@@ -32,15 +31,6 @@ const Menu = () => {
     // window.location.href = "http://localhost:3000";
     // window.close();
 // document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;";
-  // Optionally redirect or do other logout logic
-  // window.location.href = "http://localhost:3000";
-
-  //   const token = document.cookie
-  // .split('; ')
-  // .find(row => row.startsWith('token='))
-  // ?.split('=')[1];
-  // console.log(token);
- 
 
 const token = document.cookie
   .split('; ')
@@ -144,24 +134,3 @@ if (token) {
 };
 
 export default Menu;
-
-// trying to build chnage profile name dinamically
-
- // const [userId, setUserId] = useState("");
-  // const { userId } = useUser();
-
-  // useEffect(() => {
-  //   const storedUserId = localStorage.getItem("USERID"); // Retrieve USERID from local storage
-  //   if (storedUserId) {
-  //     console.log(storedUserId);
-  //     setUserId(storedUserId);
-  //   }
-  // }, []);
-  // import { useUser } from "../../../shared/UserContext";
-// import { useUser } from "../../../shared/UserContext";
-// trying to erase path after passing data
-// useEffect(() => {
-//   setTimeout(() => {
-//     Navigate(window.location.href = "http://localhost:3001/"); 
-//   },500);
-// }, [1]);

@@ -32,13 +32,11 @@ const uri = process.env.MONGO_URL;
 
 mongoose.connect(uri).then(() => console.log("MongoDB is  connected successfully"))
 .catch((err) => console.error(err));
-
 app.get('/api/user/:id', async (req, res) => {
   const user = await User.findById(req.params.id);
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json(user);
 });
-
 app.use("/", authRoute);
 
 app.listen(PORT,()=>{
