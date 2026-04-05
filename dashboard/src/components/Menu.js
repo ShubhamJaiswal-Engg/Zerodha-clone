@@ -1,30 +1,70 @@
-import React, { useState,useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import axios from 'axios'
+import {jwtDecode} from 'jwt-decode'
+// import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import LogoutIcon from "@mui/icons-material/Logout";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [userName, setUserName] = useState("Guest");
+  const [userEmail, setUserEmail] = useState("");
  
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
   };
 
-  const handleProfileClick = (index) => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  const handleProfileClick = () => {
+    setIsProfileDropdownOpen((prev) => !prev);
   };
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
+
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const userId = queryParams.get("UI");
-    setUserName(userId || "Guest");
-  // console.log(userName);
-  
+    const fetchUserInfo = async () => {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+
+      if (!token) return;
+
+      try {
+        const decoded = jwtDecode(token);
+        const { data } = await axios.get(
+          `http://localhost:3002/api/user/${decoded.id}`
+        );
+        const username = data?.username || "";
+        const email = data?.email || "";
+        const displayName = username
+          ? username.charAt(0).toUpperCase() + username.slice(1)
+          : "Guest";
+        setUserName(displayName);
+        setUserEmail(email);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetchUserInfo();
   }, []);
+
+  useEffect(() => {
+    const onDocumentClick = (e) => {
+      if (!isProfileDropdownOpen) return;
+      if (!e.target.closest("#profile-wrapper")) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", onDocumentClick);
+    return () => document.removeEventListener("mousedown", onDocumentClick);
+  }, [isProfileDropdownOpen]);
 
   const deleteCookie = (name) => {
     const expires = "Thu, 01 Jan 1970 00:00:00 GMT";
@@ -117,16 +157,55 @@ const Menu = () => {
             </Link>
           </li>
         </ul>
-        <div className="profile" onClick={handleProfileClick}>
-          <div className="avatar">{userName[0].toUpperCase() + userName[userName.length - 1].toUpperCase()}</div>
-          <p className="username">{userName}</p>
+
+        <div className="profile-wrapper" id="profile-wrapper">
+          <div className="profile" onClick={handleProfileClick}>
+            <div className="avatar">
+              {userName[0].toUpperCase() +
+                userName[userName.length - 1].toUpperCase()}
+            </div>
+            <p className="username">{userName}</p>
+            <span className="profile-caret">
+              {isProfileDropdownOpen ? (
+                <KeyboardArrowUpIcon fontSize="small" />
+              ) : (
+                <KeyboardArrowDownIcon fontSize="small" />
+              )}
+            </span>
           </div>
-          <Link
-              style={{ textDecoration: "none" }}
-              to="/apps"
-              onClick={() => handleMenuClick(7)}>
-                </Link>
-          <p className={selectedMenu === 7 ? activeMenuClass : menuClass} style={{marginLeft:"25px",cursor:"pointer",fontSize:"18px"}} onClick={logOut}>Log Out</p>
+
+          {isProfileDropdownOpen && (
+            <div className="profile-dropdown">
+              <div className="profile-dropdown-header">
+                <div className="profile-dropdown-name">{userName}</div>
+                {userEmail ? (
+                  <div className="profile-dropdown-email">{userEmail}</div>
+                ) : null}
+              </div>
+
+              {/* <div className="profile-dropdown-divider" /> */}
+
+              {/* <a
+                className="profile-dropdown-item"
+                href="http://localhost:3000/support"
+              >
+                <HelpOutlineIcon fontSize="small" />
+                <span>Need help?</span>
+              </a> */}
+
+              <div className="profile-dropdown-divider" />
+
+              <button
+                type="button"
+                className="profile-dropdown-item"
+                onClick={logOut}
+              >
+                <LogoutIcon fontSize="small" />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
