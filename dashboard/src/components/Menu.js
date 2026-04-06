@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
-import {jwtDecode} from 'jwt-decode'
 // import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { useContext } from "react";
+import GeneralContext from "./GeneralContext";
 
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [userName, setUserName] = useState("Guest");
-  const [userEmail, setUserEmail] = useState("");
  
+  const context = useContext(GeneralContext);
 
   const handleMenuClick = (index) => {
     setSelectedMenu(index);
@@ -24,36 +23,6 @@ const Menu = () => {
   };
   const menuClass = "menu";
   const activeMenuClass = "menu selected";
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
-
-      if (!token) return;
-
-      try {
-        const decoded = jwtDecode(token);
-        const { data } = await axios.get(
-          `http://localhost:3002/api/user/${decoded.id}`
-        );
-        const username = data?.username || "";
-        const email = data?.email || "";
-        const displayName = username
-          ? username.charAt(0).toUpperCase() + username.slice(1)
-          : "Guest";
-        setUserName(displayName);
-        setUserEmail(email);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchUserInfo();
-  }, []);
-
   useEffect(() => {
     const onDocumentClick = (e) => {
       if (!isProfileDropdownOpen) return;
@@ -80,13 +49,14 @@ const Menu = () => {
 
   const logOut = () => {
     deleteCookie("token");
+    localStorage.removeItem("username");
 
     // Redirect is the reliable logout UX in browsers.
     window.location.replace("http://localhost:3000");
   };
   return (
     <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }} />
+      <img src="logo.png" style={{ width: "50px" }}  />
       <div className="menus">
         <ul>
           <li>
@@ -161,10 +131,10 @@ const Menu = () => {
         <div className="profile-wrapper" id="profile-wrapper">
           <div className="profile" onClick={handleProfileClick}>
             <div className="avatar">
-              {userName[0].toUpperCase() +
-                userName[userName.length - 1].toUpperCase()}
+              {context.userName[0].toUpperCase() +
+                context.userName[context.userName.length - 1].toUpperCase()}
             </div>
-            <p className="username">{userName}</p>
+            <p className="username">{context.userName}</p>
             <span className="profile-caret">
               {isProfileDropdownOpen ? (
                 <KeyboardArrowUpIcon fontSize="small" />
@@ -177,9 +147,9 @@ const Menu = () => {
           {isProfileDropdownOpen && (
             <div className="profile-dropdown">
               <div className="profile-dropdown-header">
-                <div className="profile-dropdown-name">{userName}</div>
-                {userEmail ? (
-                  <div className="profile-dropdown-email">{userEmail}</div>
+                <div className="profile-dropdown-name">{context.userName}</div>
+                {context.userEmail ? (
+                  <div className="profile-dropdown-email">{context.userEmail}</div>
                 ) : null}
               </div>
 
