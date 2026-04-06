@@ -65,8 +65,7 @@ function Signup() {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          const userId = data.userId;
-          navigate(window.location.href = `http://localhost:3001/?UI=${userId}`);
+          window.location.href = "http://localhost:3001/?signup=true";
         }, 1000);
        
       } else {
