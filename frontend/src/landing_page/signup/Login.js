@@ -57,7 +57,7 @@ function Login() {
         setTimeout(() => {
           // Same-tab redirect to the dashboard app
           window.location.assign("http://localhost:3001");
-        }, 1500);
+        }, 2000);
       } else {
         handleError(message);
       }
