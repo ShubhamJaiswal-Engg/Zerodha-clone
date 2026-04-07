@@ -12,7 +12,7 @@ const Orders = () => {
       // console.log(res.data);
       setAllOrders(res.data);
     });
-  });
+  }, []);
   return (
     <div className="orders">
       <div className="">
