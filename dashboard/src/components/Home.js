@@ -1,4 +1,4 @@
-import React,{useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 import Dashboard from "./Dashboard";
 import TopBar from "./TopBar";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,6 +8,13 @@ const Home = () => {
   const context = useContext(GeneralContext);
 
   useEffect(() => {
+    if (!context.authChecked) return;
+    if (!context.isAuthenticated) {
+      window.location.assign("http://localhost:3000/login");
+    }
+  }, [context.authChecked, context.isAuthenticated]);
+
+  useEffect(() => {
     if (context.userName !== "Guest") {
        const urlParams = new URLSearchParams(window.location.search);
       const isSignup = urlParams.get("signup") === "true";
@@ -15,8 +22,9 @@ const Home = () => {
 
       if (isSignup) {
         urlParams.delete("signup");
-        const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
-        window.history.replaceState(null, '', newUrl);
+        //Leaving for UI=UserId { + (urlParams.toString() ? '?' + urlParams.toString() : '') }
+        // const newUrl =;
+        window.history.replaceState(null, '',  window.location.pathname);
       }
       console.log(context.userName);
       toast(message, {
@@ -33,6 +41,9 @@ const Home = () => {
       });
     }
   }, [context.userName]);
+
+  if (!context.authChecked) return null;
+  if (!context.isAuthenticated) return null;
   
   return (
     <>
@@ -44,3 +55,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+// i want to set a mechanism in which user only access dashboard only iff user is valid or authorised user show me changes to update in existing user
