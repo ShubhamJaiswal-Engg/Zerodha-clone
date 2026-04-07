@@ -6,6 +6,14 @@ const { PositionsModel } = require("../model/PositonsModel");
 const { createSecretToken } = require("../util/SecretToken");
 const bcrypt = require("bcryptjs");
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: false, // set to true if using HTTPS
+  sameSite: "lax", // or "none" if using HTTPS
+  domain: "localhost",
+  path: "/",
+};
+
 module.exports.Signup = async (req, res, next) => {
   try {
     const { email, password, username, createdAt } = req.body;
@@ -16,12 +24,8 @@ module.exports.Signup = async (req, res, next) => {
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
-      httpOnly: false,
-      secure: false, // set to true if using HTTPS
-      sameSite: "lax", // or "none" if using HTTPS
-      domain: "localhost",
-      path: "/",
-      expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
+      ...cookieOptions,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     });
     res
       .status(201)
@@ -48,12 +52,8 @@ module.exports.Login = async (req, res, next) => {
       }
        const token = createSecretToken(user._id);
        res.cookie("token", token, {
-         httpOnly: false,
-         secure: false, // set to true if using HTTPS
-         sameSite: "lax", // or "none" if using HTTPS
-         domain: "localhost",
-         path: "/",
-         expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // 1 day expiry
+         ...cookieOptions,
+         expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day expiry
        });
        res.status(201).json({ message: "User logged in successfully", success: true});// Add userId here
        next()
@@ -61,6 +61,24 @@ module.exports.Login = async (req, res, next) => {
       console.error(error);
     }
   }
+
+module.exports.Me = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("email username");
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    return res.json({
+      success: true,
+      user: {
+        id: user._id,
+        email: user.email,
+        username: user.username,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 
   module.exports.Holdings = async(req,res)=>{
     let allholding = await HoldingsModel.find({});
@@ -92,7 +110,10 @@ module.exports.NewOrder = async (req, res) => {
   res.send("Order saved!");
 }
 module.exports.UserData = async (req,res) => {
-  const user = await User.findById(req.params.id);
+  if (req.user?.id !== req.params.id) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+  const user = await User.findById(req.params.id).select("email username");
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json(user);
 }
