@@ -14,6 +14,17 @@ const cookieOptions = {
   path: "/",
 };
 
+module.exports.Logout = async (req, res) => {
+  try {
+    // Must match the cookie attributes used when setting the cookie.
+    res.clearCookie("token", cookieOptions);
+    return res.status(200).json({ success: true, message: "Logged out" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 module.exports.Signup = async (req, res, next) => {
   try {
     const { email, password, username, createdAt } = req.body;
