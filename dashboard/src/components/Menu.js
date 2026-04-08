@@ -6,6 +6,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useContext } from "react";
 import GeneralContext from "./GeneralContext";
+import axios from "axios";
 
 
 const Menu = () => {
@@ -35,28 +36,27 @@ const Menu = () => {
     return () => document.removeEventListener("mousedown", onDocumentClick);
   }, [isProfileDropdownOpen]);
 
-  const deleteCookie = (name) => {
-    const expires = "Thu, 01 Jan 1970 00:00:00 GMT";
-    const encodedName = encodeURIComponent(name);
-    const base = `${encodedName}=; expires=${expires}; Max-Age=0; path=/; SameSite=Lax`;
-
-    // If the cookie was set without `domain`, this clears it.
-    document.cookie = base;
-
-    // Your backend sets `domain=localhost`, so clear that variant too.
-    document.cookie = `${base}; domain=localhost`;
-  };
-
-  const logOut = () => {
-    deleteCookie("token");
-    localStorage.removeItem("username");
-
-    // Redirect is the reliable logout UX in browsers.
-    window.location.replace("http://localhost:3000");
+  const logOut = async () => {
+    try {
+      // Token cookie is httpOnly, so it must be cleared by the server.
+      await axios.post(
+        "http://localhost:3002/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (e) {
+      // Even if the request fails, still clear local state and redirect.
+      console.error(e);
+    } finally {
+      localStorage.removeItem("username");
+      window.location.replace("http://localhost:3000");
+    }
   };
   return (
     <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }}  />
+      <img src="logo.png" alt="Zerodha" style={{ width: "50px" }} />
       <div className="menus">
         <ul>
           <li>
