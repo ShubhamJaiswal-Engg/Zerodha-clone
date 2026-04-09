@@ -65,7 +65,8 @@ function Signup() {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          window.location.href = "http://localhost:3001/?signup=true";
+          sessionStorage.setItem("authStatus", "authed");
+          window.location.replace("http://localhost:3001/?signup=true");
         }, 1000);
        
       } else {
@@ -105,21 +106,6 @@ function Signup() {
             <p>Or track your existing application</p>
             <input
               type="text"
-              placeholder="Enter your email"
-              name="email"
-              value={email}
-              onChange={handleOnChange}
-              
-              className="mb-1 p-2"
-              style={{
-                width: "60%",
-                outline: "none",
-                borderRadius: "5px",
-                borderWidth: "1px",
-              }}
-            />
-            <input
-              type="text"
               placeholder="Username"
               className="mb-1 p-2"
               name="username"
@@ -134,6 +120,21 @@ function Signup() {
               }}
             />
             <br />
+             <input
+              type="text"
+              placeholder="Enter your email"
+              name="email"
+              value={email}
+              onChange={handleOnChange}
+              
+              className="mb-1 p-2"
+              style={{
+                width: "60%",
+                outline: "none",
+                borderRadius: "5px",
+                borderWidth: "1px",
+              }}
+            />
             <input
               type="password"
               placeholder="Password"
