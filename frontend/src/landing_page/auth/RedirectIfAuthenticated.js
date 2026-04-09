@@ -1,46 +1,16 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
+import { Navigate } from "react-router-dom";
+import useAuthStatus from "./useAuthStatus";
 
 /**
  * Blocks access to auth pages (/login, /signup) when user is already logged in.
- * If a valid session exists, redirects user to the dashboard app.
+ * If a valid session exists, redirect to landing home (/) so browser Back works cleanly.
  */
 const RedirectIfAuthenticated = ({ children }) => {
-  const [authChecked, setAuthChecked] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isCheckingAuth, isAuthenticated } = useAuthStatus();
 
-  useEffect(() => {
-    let isMounted = true;
-
-    const check = async () => {
-      try {
-        await axios.get("http://localhost:3002/me");
-        if (!isMounted) return;
-        setIsAuthenticated(true);
-        setAuthChecked(true);
-      } catch (e) {
-        if (!isMounted) return;
-        setIsAuthenticated(false);
-        setAuthChecked(true);
-      }
-    };
-
-    check();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!authChecked) return;
-    if (isAuthenticated) {
-      window.location.assign("http://localhost:3000");
-    }
-  }, [authChecked, isAuthenticated]);
-
-  if (!authChecked) return null;
-  if (isAuthenticated) return null;
+  if (isCheckingAuth) return null;
+  if (isAuthenticated) return <Navigate to="/" replace />;
 
   return <>{children}</>;
 };
