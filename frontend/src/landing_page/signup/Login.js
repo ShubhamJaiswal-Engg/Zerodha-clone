@@ -56,7 +56,8 @@ function Login() {
         handleSuccess(message);
         setTimeout(() => {
           // Same-tab redirect to the dashboard app
-          window.location.assign("http://localhost:3001");
+          sessionStorage.setItem("authStatus", "authed");
+          window.location.replace("http://localhost:3001");
         }, 2000);
       } else {
         handleError(message);
