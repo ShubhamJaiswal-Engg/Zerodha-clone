@@ -742,6 +742,7 @@ hr {
 
 .list {
   list-style-type: none;
+  padding: 0;
   padding-bottom: 12%;
 }
 
