@@ -30,6 +30,7 @@ function NavBar() {
               onClick={() => handleMenuClick(0)}
             >
               <p className={selectedMenu === 0 ? activeMenuClass : menuClass}>Dashboard</p>
+              
             </a>
           ) : (
             <Link
