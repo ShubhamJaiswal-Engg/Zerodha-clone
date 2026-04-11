@@ -1,18 +1,20 @@
 import React from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import GeneralContext from "./GeneralContext";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+
 
 const Orders = () => {
+  const data = useContext(GeneralContext);
   const [allOrders, setAllOrders] = useState([]);
 
   useEffect(() => {
     axios.get("http://localhost:3002/allOrders").then((res) => {
-      // console.log(res.data);
       setAllOrders(res.data);
     });
-  }, []);
+  }, [data.orderChecker]);
   return (
     <div className="orders">
       <div className="">
@@ -36,9 +38,14 @@ const Orders = () => {
                     <td>{orders.price.toFixed(2)}</td>
                     <td>{orders.mode}</td>
                     <td style={{ fontSize: "15px",fontWeight: "500" }}>
-                      {new Date(orders.time).toLocaleString("en-IN", {
-                        timeZone: "Asia/Kolkata",
-                      })}
+                      {(() => {
+                        const date = new Date(orders.time);
+                        const day = String(date.getDate()).padStart(2, "0");
+                        const month = String(date.getMonth() + 1).padStart(2, "0");
+                        const year = date.getFullYear();
+                        const time = date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
+                        return `${day}-${month}-${year} ${time}`;
+                      })()}
                     </td>
                   </tr>
                 );
