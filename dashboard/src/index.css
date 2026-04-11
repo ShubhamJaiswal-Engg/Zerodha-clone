@@ -32,7 +32,7 @@ code {
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
-  padding: 3% 2%;
+  padding: 0% 2%;
 }
 
 .funds {
@@ -154,12 +154,12 @@ code {
   background: #7bdd7f;
 }
 
-.title {
+/* .title {
   font-size: 1.3rem;
   font-weight: 300;
   color: rgb(71, 71, 71);
   margin-bottom: 2%;
-}
+} */
 
 .order-table table {
   width: 100%;
@@ -454,7 +454,7 @@ hr {
   font-size: 1.3rem;
   font-weight: 300;
   color: rgb(71, 71, 71);
-  margin-bottom: 2%;
+  margin: 2% 0%;
 }
 
 .order-table table {
@@ -742,8 +742,8 @@ hr {
 
 .list {
   list-style-type: none;
-  padding: 0em 1.5em .5em  ;
-  padding-bottom: 12%;
+  padding: 0em 1.5em 0em  ;
+  /* padding-bottom: 12%; */
 }
 
 .list li {
@@ -798,11 +798,21 @@ hr {
   display: none;
 }
 
+.actions > span {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .actions span button {
-  width: 40px;
-  height: 30px;
+  width: 35px;
+  height: 25px;
   border-radius: 4px;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   margin-right: 8px;
   cursor: pointer;
 }
@@ -888,7 +898,17 @@ hr {
 
 .list li:hover > .actions {
   display: flex;
+  /* backdrop-filter: blur(10px); */
   cursor: move;
+}
+.list li:hover .item-info .price{
+  visibility: hidden;
+}
+.list li:hover .item-info .down{
+  visibility: hidden;
+}
+.list li:hover .item-info .percent{
+  visibility: hidden;
 }
 
 /* TODO */
