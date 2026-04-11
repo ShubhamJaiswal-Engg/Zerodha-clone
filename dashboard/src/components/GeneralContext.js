@@ -9,7 +9,12 @@ const GeneralContext = createContext();
 export const GeneralContextProvider = (props) => {
   const [isBuyWindowOpen, setIsBuyWindowOpen] = useState(false);
   const [isSellWindowOpen, setIsSellWindowOpen] = useState(false);
-  const [selectedStockUID, setSelectedStockUID] = useState("");
+  const [orderChecker, SetOrderChecker] = useState(false);
+  const [selectedStock, setSelectedStock] = useState({
+    uid: "",
+    price: null,
+    percent: "",
+  });
   const [userName, setUserName] = useState(localStorage.getItem("username") || "Guest");
   const [userEmail, setUserEmail] = useState("");
   const [authChecked, setAuthChecked] = useState(false);
@@ -54,19 +59,38 @@ export const GeneralContextProvider = (props) => {
   }, []);
 
 
-  const handleOpenBuyWindow = (uid) => {
+  const handleOpenBuyWindow = (stockOrUid) => {
+    setIsSellWindowOpen(false);
     setIsBuyWindowOpen(true);
-    setSelectedStockUID(uid);
-  };
-  const handleOpenSellWindow = (uid) => {
-    setIsSellWindowOpen(true);
-    setSelectedStockUID(uid);
-  };
 
+    if (typeof stockOrUid === "string") {
+      setSelectedStock({ uid: stockOrUid, price: null, percent: "" });
+    } else {
+      setSelectedStock({
+        uid: stockOrUid?.name ?? stockOrUid?.uid ?? "",
+        price: stockOrUid?.price ?? null,
+        percent: stockOrUid?.percent ?? "",
+      });
+    }
+  };
+  const handleOpenSellWindow = (stockOrUid) => {
+    setIsBuyWindowOpen(false);
+    setIsSellWindowOpen(true);
+
+    if (typeof stockOrUid === "string") {
+      setSelectedStock({ uid: stockOrUid, price: null, percent: "" });
+    } else {
+      setSelectedStock({
+        uid: stockOrUid?.name ?? stockOrUid?.uid ?? "",
+        price: stockOrUid?.price ?? null,
+        percent: stockOrUid?.percent ?? "",
+      });
+    }
+  };
   const handleCloseBuyWindow = () => {
     setIsBuyWindowOpen(false);
     setIsSellWindowOpen(false);
-    setSelectedStockUID("");
+    setSelectedStock({ uid: "", price: null, percent: "" });
   };
 
   return (
@@ -76,6 +100,9 @@ export const GeneralContextProvider = (props) => {
         openSellWindow: handleOpenSellWindow,
         closeBuyWindow: handleCloseBuyWindow,
         closeSellWindow: handleCloseBuyWindow,
+        orderChecker,
+        setOrderChecker: SetOrderChecker,
+        selectedStock,
         userName,
         userEmail,
         authChecked,
@@ -83,8 +110,20 @@ export const GeneralContextProvider = (props) => {
       }}
     >
       {props.children}
-      {isBuyWindowOpen && <BuyActionWindow uid={selectedStockUID} />}
-      {isSellWindowOpen && <SellActionWindow uid={selectedStockUID} />}
+      {isBuyWindowOpen && (
+        <BuyActionWindow
+          uid={selectedStock.uid}
+          price={selectedStock.price}
+          percent={selectedStock.percent}
+        />
+      )}
+      {isSellWindowOpen && (
+        <SellActionWindow
+          uid={selectedStock.uid}
+          price={selectedStock.price}
+          percent={selectedStock.percent}
+        />
+      )}
     </GeneralContext.Provider>
   );
 };
