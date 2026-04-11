@@ -1,4 +1,4 @@
-import React, {useContext, useState } from "react";
+import React, {useContext, useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
@@ -8,11 +8,15 @@ import GeneralContext from "./GeneralContext";
 
 import "./BuyActionWindow.css";
 
-const SellActionWindow = ({ uid }) => {
-  const { closeSellWindow } = useContext(GeneralContext); 
+const SellActionWindow = ({ uid, price, percent }) => {
+  const { closeSellWindow, setOrderChecker } = useContext(GeneralContext); 
   const [stockQuantity, setStockQuantity] = useState(1);
-  const [stockPrice, setStockPrice] = useState(0.0);
+  const [stockPrice, setStockPrice] = useState(typeof price === "number" ? price : 0.0);
 
+    useEffect(()=>{
+      setStockPrice(price);
+    },[price])
+    
   const handleSellClick = () => {
     axios.post("http://localhost:3002/newOrder", {
       name: uid,
@@ -20,6 +24,7 @@ const SellActionWindow = ({ uid }) => {
       price: stockPrice,
       mode: "SELL",
     });
+    setOrderChecker(prev => !prev);
     closeSellWindow();
   };
 
@@ -57,6 +62,8 @@ const SellActionWindow = ({ uid }) => {
 
       <div className="buttons">
         <span>Margin required ₹140.65</span>
+        <span>Price: {typeof price === "number" ? `₹${price}` : "-"}</span>
+        <span>Percent: {percent || "-"}</span>
         <div>
           <Link className="btn btn-blue" onClick={handleSellClick}>
             Sell
