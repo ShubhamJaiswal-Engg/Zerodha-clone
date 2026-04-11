@@ -92,18 +92,21 @@ module.exports.Me = async (req, res) => {
 };
 
   module.exports.Holdings = async(req,res)=>{
-    let allholding = await HoldingsModel.find({});
+    const uid = req.user.id; // Securely fetch using authenticated token
+    let allholding = await HoldingsModel.find({ uid: uid });
     res.send(allholding);
 }
 
 module.exports.Positions = async(req,res)=>{
-    let allpositions = await PositionsModel.find({});
+    const uid = req.user.id;
+    let allpositions = await PositionsModel.find({ uid: uid });
     res.send(allpositions);
 }
 
 
 module.exports.Orders = async(req,res)=>{
-    let allorders = await OrdersModel.find({});
+    const uid = req.user.id;
+    let allorders = await OrdersModel.find({ uid: uid });
     res.send(allorders);
 }
 
@@ -113,10 +116,11 @@ module.exports.NewOrder = async (req, res) => {
     qty: req.body.qty,
     price: req.body.price,
     mode: req.body.mode,
+    uid: req.user.id, // Save the specific user's ID along with the order
     time:  new Date().toLocaleString("en-IN"),
   });
 
-  newOrder.save();
+  await newOrder.save(); // It's a good practice to await the save operation
 
   res.send("Order saved!");
 }
