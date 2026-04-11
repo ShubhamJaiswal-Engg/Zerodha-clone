@@ -11,8 +11,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.nav-link{
+.navbar{
+  height: 10vh;
+}
+
+.navbar .nav-link{
   margin-left: 20px;
+  display: flex;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar .nav-link p{
+  margin: 0;
+  line-height: 1;
+}
+
+.navbar .nav-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar .navbar-nav{
+  align-items: center;
+}
+
+.navbar .navbar-brand{
+  display: flex;
+  align-items: center;
+}
+
+.navbar .navbar-brand img{
+  display: block;
 }
 #supportwrapper{
   background: rgb(56, 126, 209);
