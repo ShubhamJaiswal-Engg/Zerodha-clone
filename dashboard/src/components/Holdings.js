@@ -86,22 +86,22 @@ const Holdings = () => {
         </table>
       </div>
 
-      <div className="row">
-        <div className="col">
-          <h5>
+      <div className="grid grid-cols-3 gap-4 text-center mt-8 border-t pt-8">
+        <div className="flex flex-col items-center">
+          <h5 className="text-xl font-medium">
             29,875.<span>55</span>{" "}
           </h5>
-          <p>Total investment</p>
+          <p className="text-gray-500 text-sm">Total investment</p>
         </div>
-        <div className="col">
-          <h5>
+        <div className="flex flex-col items-center border-l border-r border-gray-200">
+          <h5 className="text-xl font-medium">
             31,428.<span>95</span>{" "}
           </h5>
-          <p>Current value</p>
+          <p className="text-gray-500 text-sm">Current value</p>
         </div>
-        <div className="col">
-          <h5>1,553.40 (+5.20%)</h5>
-          <p>P&L</p>
+        <div className="flex flex-col items-center">
+          <h5 className="text-xl font-medium text-green-500">1,553.40 (+5.20%)</h5>
+          <p className="text-gray-500 text-sm">P&L</p>
         </div>
       </div>
       <VerticalGraph data={data} />
