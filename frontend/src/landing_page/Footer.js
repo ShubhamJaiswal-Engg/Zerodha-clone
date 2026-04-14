@@ -4,109 +4,98 @@ import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer
-      className="border-top"
-      style={{ backgroundColor: "rgb(250,250,250)" }}
+      className="border-t bg-gray-50 text-gray-600"
     >
-      <div className="container p-5">
-        <div className="row">
-          <div className="col">
+      <div className="container mx-auto px-4 py-10 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          <div className="flex flex-col">
             <img
               src="media/images/logo.svg"
-              style={{ width: "50%", marginBottom: "20px", fontSize: "10px" }}
+              className="w-32 md:w-40 mb-6 pt-2"
+              alt="logo"
             />
-            <p style={{ fontSize: "13px" }}>
+            <p className="text-sm text-gray-500">
               &copy; 2010 - 2025, Zerodha Broking Ltd.<br></br> All rights
               reserved.
             </p>
-            <div className="row">
-              <div className="col">
-                <i className="fa-brands fa-x-twitter"></i>
-              </div>
-              <div className="col">
-                <i className="fa-brands fa-facebook"></i>
-              </div>
-              <div className="col">
-                <i className="fa-brands fa-instagram"></i>
-              </div>
-              <div className="col">
-                <i className="fa-brands fa-linkedin"></i>
-              </div>
-              <div className="col"></div>
-              <div className="col"></div>
-              <div className="col"></div>
+            <div className="flex gap-5 mt-6 text-xl">
+              <i className="fa-brands fa-x-twitter hover:text-gray-900 cursor-pointer"></i>
+              <i className="fa-brands fa-facebook hover:text-gray-900 cursor-pointer"></i>
+              <i className="fa-brands fa-instagram hover:text-gray-900 cursor-pointer"></i>
+              <i className="fa-brands fa-linkedin hover:text-gray-900 cursor-pointer"></i>
             </div>
           </div>
-          <div className="col">
-            <h5 className="mb-3">Company</h5>
-            <a style={{ textDecoration: "none" }}>
+          <div className="flex flex-col">
+            <h5 className="mb-4 sm:mt-0 text-lg font-semibold text-gray-800">Company</h5>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               About <br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Products<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Pricing<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Referral programme<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Careers<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Zerodha.tech<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Open source<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Press & media<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Zerodha Cares (CSR)<br></br>
             </a>
           </div>
-          <div className="col">
-            <h5 className="mb-3">Support</h5>
-            <a style={{ textDecoration: "none" }}>
+          <div className="flex flex-col">
+            <h5 className="mb-4 sm:mt-0 text-lg font-semibold text-gray-800">Support</h5>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Contact us <br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Support portal<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Z-Connect blog<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               List of charges<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Downloads & resources<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Videos<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Market overview<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               How to file a complaint?<br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Status of your complaints<br></br>
             </a>
           </div>
-          <div className="col">
-            <h5 className="mb-3">Account</h5>
-            <a style={{ textDecoration: "none" }}>
+          <div className="flex flex-col">
+            <h5 className="mb-4 sm:mt-0 text-lg font-semibold text-gray-800">Account</h5>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Open an account <br></br>
             </a>
-            <a style={{ textDecoration: "none" }}>
+            <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Fund transfer<br></br>
             </a>
           </div>
         </div>
-        <div className="mt-5 text-muted " style={{ fontSize: "10px" }}>
+        <div className="mt-12 border-t pt-8 text-gray-500 text-xs space-y-4">
           <p>
             Zerodha Broking Ltd.: Member of NSE, BSE​ &​ MCX – SEBI Registration
             no.: INZ000031633 CDSL/NSDL: Depository services through Zerodha
@@ -116,21 +105,21 @@ function Footer() {
             Broking Ltd., #153/154, 4th Cross, Dollars Colony, Opp. Clarence
             Public School, J.P Nagar 4th Phase, Bengaluru - 560078, Karnataka,
             India. For any complaints pertaining to securities broking please
-            write to <Link style={{textDecoration:"none"}}>complaints@zerodha.com</Link>, for DP related to <Link style={{textDecoration:"none"}}>dp@zerodha.com</Link>.
+            write to <Link className="text-blue-500 hover:underline">complaints@zerodha.com</Link>, for DP related to <Link className="text-blue-500 hover:underline">dp@zerodha.com</Link>.
             Please ensure you carefully read the Risk Disclosure Document as
             prescribed by SEBI | ICF{" "}
           </p>
 
           <p>
             {" "}
-            Procedure to file a complaint on <Link style={{textDecoration:"none"}}>SEBI SCORES</Link>: Register on SCORES
+            Procedure to file a complaint on <Link className="text-blue-500 hover:underline">SEBI SCORES</Link>: Register on SCORES
             portal. Mandatory details for filing complaints on SCORES: Name,
             PAN, Address, Mobile Number, E-mail ID. Benefits: Effective
             Communication, Speedy redressal of the grievances{" "}
           </p>
 
           <p>
-            <Link style={{textDecoration:"none"}}>Smart Online Dispute Resolution | Grievances Redressal Mechanism</Link>{" "}
+            <Link className="text-blue-500 hover:underline">Smart Online Dispute Resolution | Grievances Redressal Mechanism</Link>{" "}
           </p>
 
           <p>
@@ -165,7 +154,7 @@ function Footer() {
             bank account. As a business we don't give stock tips, and have not
             authorized anyone to trade on behalf of others. If you find anyone
             claiming to be part of Zerodha and offering such services, please  &nbsp;
-             <Link style={{textDecoration:"none"}}>create a ticket here.</Link>
+             <Link className="text-blue-500 hover:underline">create a ticket here.</Link>
             
           </p>
         </div>
