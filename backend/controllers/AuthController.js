@@ -1,4 +1,4 @@
-const User = require("../model/userModel");
+const User = require("../model/userModel.js");
 
 const {OrdersModel} = require("../model/OrdersModel");
 const { HoldingsModel } = require("../model/HoldingsModel");
@@ -133,5 +133,3 @@ module.exports.UserData = async (req,res) => {
   res.json(user);
 }
 
-
-  
