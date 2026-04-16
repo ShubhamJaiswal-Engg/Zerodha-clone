@@ -38,7 +38,7 @@ module.exports.sendResetOtp = async (req, res) =>{
         return res.json({success: false, message:error.message});
     }
 };
-// Check for Otp
+// Request for Otp
 module.exports.verifyOtp = async (req, res) => {
     const {email,otp} = req.body || {};
     const user = await User.findOne({email});
