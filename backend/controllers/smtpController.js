@@ -38,6 +38,22 @@ module.exports.sendResetOtp = async (req, res) =>{
         return res.json({success: false, message:error.message});
     }
 };
+// Check for Otp
+module.exports.verifyOtp = async (req, res) => {
+    const {email,otp} = req.body || {};
+    const user = await User.findOne({email});
+    if(!user) {
+        return res.json({ success: false, message:"User does not exist"});
+    }
+    if(user.resetOtpExpiresAt < Date.now()) {
+           return res.json({ success: false, message: "OTP Expired"});
+        }
+    if(user.resetOtp === '' || user.resetOtp !== String(otp)) {
+           return res.json({ success: false, message: "Invalid OTP"});
+        }
+
+     return res.json({success:true, message:"Otp Verified Succesfully"});   
+}
 
 // Reset User password
 module.exports.resetPassword = async (req, res)=>{
@@ -50,11 +66,11 @@ module.exports.resetPassword = async (req, res)=>{
         if(!user) {
            return res.json({ success: false, message: "User not found"});
         }
-        if(user.resetOtp === '' || user.resetOtp !== String(otp)) {
-           return res.json({ success: false, message: "Invalid OTP"});
-        }
         if(user.resetOtpExpiresAt < Date.now()) {
            return res.json({ success: false, message: "OTP Expired"});
+        }
+        if(user.resetOtp === '' || user.resetOtp !== String(otp)) {
+           return res.json({ success: false, message: "Invalid OTP"});
         }
 
         user.password = newPassword; // The pre('save') hook will hash this automatically!
