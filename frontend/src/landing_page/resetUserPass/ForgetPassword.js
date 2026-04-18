@@ -66,7 +66,7 @@ const ForgetPassword = () => {
             <p className="text-gray-500 mb-3">Enter your registered email address</p>
             
             <div className="relative">
-              <EmailIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <EmailIcon fontSize="small" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input  type="email"
               autoCorrect="on"
                 name="email"
@@ -111,7 +111,7 @@ const ForgetPassword = () => {
             <p className="text-gray-500 mb-3">Enter the new password below.</p>
             
             <div className="relative">
-              <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <LockIcon fontSize="small" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input  type="password"
               autoCorrect="on"
                 name="email"
