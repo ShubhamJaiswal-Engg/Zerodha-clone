@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
 import { ToastContainer, toast } from "react-toastify";
 function Login() {
   const [inputValue, setInputValue] = useState({
@@ -28,12 +30,20 @@ function Login() {
   const validateInput = () => {
     // Simple email regex for validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
+    if (!email) {
+      handleError("Please enter a email address.");
+      return false;
+    }
+    if (!emailRegex.test(email)) {
       handleError("Please enter a valid email address.");
       return false;
     }
-    if (!password || password.length < 6) {
-      handleError("Password must be at least 6 characters long.");
+    if (!password) {
+      handleError("Please enter password.");
+      return false;
+    }
+    if (password.length < 6) {
+      handleError("Please enter valid password.");
       return false;
     }
     return true;
@@ -57,7 +67,9 @@ function Login() {
         setTimeout(() => {
           // Same-tab redirect to the dashboard app
           sessionStorage.setItem("authStatus", "authed");
-          window.location.replace("http://localhost:3001");
+          // It will save on same tab
+          // localStorage.setItem("authStatus", "authed");
+          window.location.replace("http://localhost:3001?login=true");
         }, 2000);
       } else {
         handleError(message);
@@ -72,45 +84,55 @@ function Login() {
     });
   };
   return (
-    <div className="container">
-      <div className="row p-3 mt-5">
-        <div className="col">
-          <h1 className="text-center mb-4" style={{ fontSize: "45px" }}>
-            Login your trading account invest and earn fastly with Zerodha
+    <div className="container mx-auto p-4 md:p-12 mt-12 mb-24">
+      <div className="flex flex-col items-center mb-16 max-w-5xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-semibold text-gray-800 mb-6 text-center leading-tight">
+            Login your trading account invest and earn fastly with StockX
           </h1>
-          <h4 className="text-muted fs-5 text-center">
+          <h4 className="text-lg md:text-xl text-gray-500 text-center">
             Start investing brokerage free and join a community of 1.5+ crore
             investors and traders
           </h4>
-        </div>
       </div>
-      <div className="row p-5" style={{marginBottom:"80px"}}>
-        <div className="col-1"></div>
-        <div className="col-5">
-          <img src="media/images/account_open.svg" alt="..." />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 max-w-5xl mx-auto items-center">
+        <div className="flex justify-center">
+          <img src="media/images/account_open.svg" alt="Login" className="w-4/5 md:w-full" />
         </div>
-        <div className="col-5 p-4">
-      <form onSubmit={handleSubmit}>
-          <h1>Login</h1>
-          <p>Or track your existing application</p>
-          <input  type="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={handleOnChange} className="mb-1 p-2"  style={{width:"60%",outline:"none",borderRadius:"5px",borderWidth:"1px"}}/>
-          <br />
-          <input  type="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange} className="mb-1 p-2"  style={{width:"60%",outline:"none",borderRadius:"5px",borderWidth:"1px"}} />
-          <br />
-          <input type="submit" value="Log In" className="btn btn-primary fs-5 mb-2" style={{width: "60%"}}/> <br/>
-          <span style={{marginLeft:"30px"}} >Don't have an account?</span><Link to={"/signup"}>Signup</Link>
-        </form>
-        <ToastContainer />
+        <div className="flex justify-center md:justify-start">
+          <form onSubmit={handleSubmit} className="flex flex-col w-full max-w-md space-y-2 px-4 md:px-0">
+            
+            <h1 className="text-3xl font-medium text-gray-800">Login</h1>
+            <p className="text-gray-500 mb-3">Or track your existing application</p>
+            <div className="relative">
+
+            <EmailIcon fontSize="small" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input  type="email"
+              name="email"
+              value={email}
+              placeholder="Enter your email"
+              onChange={handleOnChange} 
+              className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
+              </div>
+            <div className="relative">
+            <LockIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input  type="password"
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={handleOnChange} 
+              className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
+            </div>
+            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
+              Log In
+            </button>
+            <div className="text-gray-600 mt-4 text-center md:text-left">
+              <span>Don't have an account? </span>
+              <Link to={"/signup"} className="text-blue-500 hover:text-blue-700 hover:underline text-lg font-medium">Signup</Link>
+            </div>
+              <Link className="flex justify-center items-center text-blue-500 text-lg hover:underline hover:text-blue-700" to={"/forget-password"}>Forgotten password?</Link>      
+          </form>
+          <ToastContainer />
         </div>
-        <div className="col-1"></div>
       </div>
     </div>
   );
