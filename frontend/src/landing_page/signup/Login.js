@@ -64,7 +64,6 @@ function Login() {
         },
         { withCredentials: true }
       );
-      console.log(data);
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
@@ -83,11 +82,13 @@ function Login() {
       console.log(error);
     }
     setIsLoading(false);
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
+    setTimeout(() =>{
+        setInputValue({
+              ...inputValue,
+              email: "",
+              password: "",
     });
+    },2500);
   };
   return (
     <div className="container mx-auto p-4 md:p-12 mt-12 mb-24">
@@ -136,7 +137,7 @@ function Login() {
               }`}
             >
               <span className="inline-flex items-center justify-center gap-2">
-                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />}
+                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-blue-900 border-t-transparent" aria-hidden="true" />}
                 {isLoading ? "Logging In..." : "Log In"}
               </span>
             </button>
