@@ -15,7 +15,7 @@ function Footer() {
               alt="logo"
             />
             <p className="text-sm text-gray-500">
-              &copy; 2010 - 2025, Zerodha Broking Ltd.<br></br> All rights
+              &copy; 2010 - 2025, StockX Broking Ltd.<br></br> All rights
               reserved.
             </p>
             <div className="flex gap-5 mt-6 text-xl">
@@ -43,7 +43,7 @@ function Footer() {
               Careers<br></br>
             </a>
             <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
-              Zerodha.tech<br></br>
+              StockX.tech<br></br>
             </a>
             <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
               Open source<br></br>
@@ -52,7 +52,7 @@ function Footer() {
               Press & media<br></br>
             </a>
             <a className="block hover:text-blue-500 mb-2 cursor-pointer transition-colors duration-200">
-              Zerodha Cares (CSR)<br></br>
+              StockX Cares (CSR)<br></br>
             </a>
           </div>
           <div className="flex flex-col">
@@ -97,15 +97,15 @@ function Footer() {
         </div>
         <div className="mt-12 border-t pt-8 text-gray-500 text-xs space-y-4">
           <p>
-            Zerodha Broking Ltd.: Member of NSE, BSE​ &​ MCX – SEBI Registration
-            no.: INZ000031633 CDSL/NSDL: Depository services through Zerodha
+            StockX Broking Ltd.: Member of NSE, BSE​ &​ MCX – SEBI Registration
+            no.: INZ000031633 CDSL/NSDL: Depository services through StockX
             Broking Ltd. – SEBI Registration no.: IN-DP-431-2019 Commodity
-            Trading through Zerodha Commodities Pvt. Ltd. MCX: 46025; NSE-50001
-            – SEBI Registration no.: INZ000038238 Registered Address: Zerodha
+            Trading through StockX Commodities Pvt. Ltd. MCX: 46025; NSE-50001
+            – SEBI Registration no.: INZ000038238 Registered Address: StockX
             Broking Ltd., #153/154, 4th Cross, Dollars Colony, Opp. Clarence
             Public School, J.P Nagar 4th Phase, Bengaluru - 560078, Karnataka,
             India. For any complaints pertaining to securities broking please
-            write to <Link className="text-blue-500 hover:underline">complaints@zerodha.com</Link>, for DP related to <Link className="text-blue-500 hover:underline">dp@zerodha.com</Link>.
+            write to <Link className="text-blue-500 hover:underline">complaints@stockx.com</Link>, for DP related to <Link className="text-blue-500 hover:underline">dp@stockx.com</Link>.
             Please ensure you carefully read the Risk Disclosure Document as
             prescribed by SEBI | ICF{" "}
           </p>
@@ -153,7 +153,7 @@ function Footer() {
             of allotment. In case of non allotment the funds will remain in your
             bank account. As a business we don't give stock tips, and have not
             authorized anyone to trade on behalf of others. If you find anyone
-            claiming to be part of Zerodha and offering such services, please  &nbsp;
+            claiming to be part of StockX and offering such services, please  &nbsp;
              <Link className="text-blue-500 hover:underline">create a ticket here.</Link>
             
           </p>
