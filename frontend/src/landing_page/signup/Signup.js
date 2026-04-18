@@ -6,6 +6,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import { ToastContainer, toast } from "react-toastify";
 function Signup() {
+  const [isLoading,setIsLoading ] = useState(false)
   const [inputValue, setInputValue] = useState({
     email:"",
     password: "",
@@ -67,6 +68,8 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInput()) return;
+    if(isLoading) return;
+    setIsLoading(true)
     try {
       const { data } = await axios.post(
         "http://localhost:3002/signup",
@@ -83,20 +86,22 @@ function Signup() {
           // It will save on same tab
           // localStorage.setItem("authStatus", "authed");
           window.location.replace("http://localhost:3001/?signup=true");
-        }, 1000);
-       
+        }, 2000);
+       return; //Keep active loader until redirect
       } else {
         handleError(message);
       }
     } catch (error) {
       console.log(error);
     }
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-      username: "",
+    setIsLoading(false)
+    setTimeout(() =>{
+        setInputValue({
+              ...inputValue,
+              email: "",
+              password: "",
     });
+    },2500);
   };
   return (
     <div className="container mx-auto p-4 md:p-12 mt-12 mb-24">
@@ -151,8 +156,13 @@ function Signup() {
               className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
             />
             </div>
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
-              SignUp
+            <button disabled={isLoading} type="submit" className={`w-full bg-blue-500  text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2 ${ 
+              isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
+             }`}>
+               <span className="inline-flex items-center justify-center gap-2">
+                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-blue-900 border-t-transparent" aria-hidden="true" />}
+                {isLoading ? "Signing Up..." : "SignUp"}
+              </span>
             </button>
             <div className="text-gray-600 mt-4 text-center md:text-left">
               <span>If you have an existing account? </span>
