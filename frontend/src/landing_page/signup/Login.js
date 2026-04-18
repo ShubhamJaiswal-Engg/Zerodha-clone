@@ -5,10 +5,12 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { ToastContainer, toast } from "react-toastify";
 function Login() {
+  
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const { email, password } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -52,6 +54,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInput()) return;
+    if (isLoading) return;
+    setIsLoading(true);
     try {
       const { data } = await axios.post(
         "http://localhost:3002/login",
@@ -71,12 +75,14 @@ function Login() {
           // localStorage.setItem("authStatus", "authed");
           window.location.replace("http://localhost:3001?login=true");
         }, 2000);
+        return; // Keep loader active until redirect
       } else {
         handleError(message);
       }
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
     setInputValue({
       ...inputValue,
       email: "",
@@ -122,8 +128,17 @@ function Login() {
               onChange={handleOnChange} 
               className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
             </div>
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
-              Log In
+            <button 
+              type="submit" 
+              disabled={isLoading}
+              className={`w-full bg-blue-500 text-white font-bold py-2.5 px-4 rounded text-lg transition duration-200 mt-2 ${
+                isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
+              }`}
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />}
+                {isLoading ? "Logging In..." : "Log In"}
+              </span>
             </button>
             <div className="text-gray-600 mt-4 text-center md:text-left">
               <span>Don't have an account? </span>
