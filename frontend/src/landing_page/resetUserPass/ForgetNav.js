@@ -10,7 +10,6 @@ const ForgetNav = () => {
 
   const logOut = () => {
     setIsProfileDropdownOpen((prev) => !prev);
-    console.log("I am working")
     window.location.replace("http://localhost:3000/login")
   }
 
@@ -20,7 +19,7 @@ const ForgetNav = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link className="flex items-center" to={"/"} >
-              <img src='media/images/logo.svg' alt="logo" className="h-6 w-auto sm:h-8" />
+              <img src='media/images/logo.png' alt="logo" className="h-10 w-auto sm:h-12" />
             </Link>
           </div>
           <div className="relative flex items-center">
