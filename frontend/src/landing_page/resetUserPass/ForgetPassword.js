@@ -8,45 +8,76 @@ import LockIcon from '@mui/icons-material/Lock';
 const ForgetPassword = () => {
   const navigate = useNavigate();
 
-  const backendUrl = " http://localhost:3002"
+  const backendUrl = "http://localhost:3002";
 
   const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [otp, setOtp] = useState('');
   const [isOtpSubmited, setIsOtpSubmited] = useState(false); 
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+
+  const getErrorMessage = (error) => {
+    return (
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      "Request failed"
+    );
+  };
+
+  const Spinner = () => (
+    <span
+      className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-blue-900 border-t-transparent"
+      aria-hidden="true"
+    />
+  );
      const onSubmitEmail = async (e)=>{
        e.preventDefault()
+       if (isSendingOtp) return;
        try {
+        setIsSendingOtp(true);
         const {data} = await axios.post(backendUrl + '/forget-password',{email});
         data.success ? toast.success(data.message) : toast.error(data.message)
         data.success && setIsEmailSent(true)
        } catch (error) {
-        toast.error(error.message);
+        toast.error(getErrorMessage(error));
+       } finally {
+        setIsSendingOtp(false);
        }
      };
 
      const onSubmitOtp = async (e) =>{
        e.preventDefault();
         try {
+        if (isVerifyingOtp) return;
+        setIsVerifyingOtp(true);
         const {data} = await axios.post(backendUrl + '/verify-otp',{email, otp});
         data.success ? toast.success(data.message) : toast.error(data.message)
         data.success && setIsOtpSubmited(true);
        } catch (error) {
-        toast.error(error.message);
+        toast.error(getErrorMessage(error));
+       } finally {
+        setIsVerifyingOtp(false);
        }
      }
 
       const onSubmitNewPassword = async (e)=>{
        e.preventDefault();
        try {
+        if (isResettingPassword) return;
+        setIsResettingPassword(true);
         const {data} = await axios.post(backendUrl + '/reset-password', {email,otp,newPassword});
         data.success ? toast.success(data.message) : toast.error(data.message)
         setTimeout(() => {
           data.success && navigate('/login')
         }, 2000);
        } catch (error) {
-        toast.error(error.message);
+        toast.error(getErrorMessage(error));
+       } finally {
+        setIsResettingPassword(false);
        }
      };
 
@@ -73,10 +104,20 @@ const ForgetPassword = () => {
                 value={email}
                 placeholder="Enter your email"
                 onChange={e => setEmail(e.target.value)} 
+                disabled={isSendingOtp}
                 className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
             </div>
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
-              Submit
+            <button
+              type="submit"
+              disabled={isSendingOtp}
+              className={`w-full bg-blue-500 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2 ${
+                isSendingOtp ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
+              }`}
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                {isSendingOtp ? <Spinner /> : null}
+                {isSendingOtp ? "Sending OTP..." : "Submit"}
+              </span>
             </button>
           </form>
             }
@@ -91,6 +132,7 @@ const ForgetPassword = () => {
                   autoComplete="one-time-code" inputMode="numeric" maxLength="6" type="tel" placeholder="••••••" pattern="[0-9]+" 
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
+                  disabled={isVerifyingOtp}
                   className="focus-visible:outline-none focus:border-blue-400 py-1.5 md:py-4 flex w-full border border-gray-300 px-5 ring-offset-2 disabled:cursor-not-allowed disabled:border-0 disabled:bg-[#F7F7F7E5] rounded-none rounded-r text-[1.8rem] tracking-[0.6rem] placeholder:text-[#D9D9D9] text-gray-800 transition-colors"
                   required
                 />
@@ -100,8 +142,17 @@ const ForgetPassword = () => {
                 <img src="data:image/svg+xml,%3csvg%20width='19'%20height='27'%20viewBox='0%200%2019%2027'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M15.542%201.41406H3.45866C2.12397%201.41406%201.04199%202.49604%201.04199%203.83073V23.1641C1.04199%2024.4987%202.12397%2025.5807%203.45866%2025.5807H15.542C16.8767%2025.5807%2017.9587%2024.4987%2017.9587%2023.1641V3.83073C17.9587%202.49604%2016.8767%201.41406%2015.542%201.41406Z'%20stroke='black'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M9.5%2020.75H9.51239'%20stroke='black'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e" alt="India Phone number" aria-label="India Flag" className="w-4 md:flex" />
               </div>
             </div>
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
-              Submit otp
+            <button
+              type="submit"
+              disabled={isVerifyingOtp}
+              className={`w-full bg-blue-500 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2 ${
+                isVerifyingOtp ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
+              }`}
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                {isVerifyingOtp ? <Spinner /> : null}
+                {isVerifyingOtp ? "Verifying OTP..." : "Submit otp"}
+              </span>
             </button>
           </form>
             }
@@ -118,10 +169,20 @@ const ForgetPassword = () => {
                 value={newPassword}
                 placeholder="Enter your new password"
                 onChange={e => setNewPassword(e.target.value)}
+                disabled={isResettingPassword}
                 className="w-full pl-10 pr-2 py-2.5 border border-gray-300 rounded outline-none focus:ring-2 focus:ring-blue-400 text-gray-800" />
             </div>
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2">
-              Submit
+            <button
+              type="submit"
+              disabled={isResettingPassword}
+              className={`w-full bg-blue-500 text-white font-semibold py-2.5 px-4 rounded text-lg transition duration-200 mt-2 ${
+                isResettingPassword ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
+              }`}
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                {isResettingPassword ? <Spinner /> : null}
+                {isResettingPassword ? "Resetting..." : "Submit"}
+              </span>
             </button>
           </form>
             }
