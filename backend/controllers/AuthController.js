@@ -111,18 +111,38 @@ module.exports.Orders = async(req,res)=>{
 }
 
 module.exports.NewOrder = async (req, res) => {
-  let newOrder = new OrdersModel({
-    name: req.body.name,
-    qty: req.body.qty,
-    price: req.body.price,
-    mode: req.body.mode,
-    uid: req.user.id, // Save the specific user's ID along with the order
-    time:  new Date().toLocaleString("en-IN"),
-  });
+  try {
+    const { name, qty, price, mode } = req.body;
 
-  await newOrder.save(); // It's a good practice to await the save operation
+    if (!name || !mode) {
+      return res.status(400).json({ success: false, message: "Missing name/mode" });
+    }
 
-  res.send("Order saved!");
+    const parsedQty = Number(qty);
+    const parsedPrice = Number(price);
+
+    if (!Number.isFinite(parsedQty) || parsedQty <= 0) {
+      return res.status(400).json({ success: false, message: "Invalid qty" });
+    }
+    if (!Number.isFinite(parsedPrice) || parsedPrice < 0) {
+      return res.status(400).json({ success: false, message: "Invalid price" });
+    }
+
+    const newOrder = new OrdersModel({
+      name,
+      qty: parsedQty,
+      price: parsedPrice,
+      mode,
+      uid: req.user.id,
+      time: new Date(),
+    });
+
+    await newOrder.save();
+    return res.json({ success: true, message: "Order saved!" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
 }
 module.exports.UserData = async (req,res) => {
   if (req.user?.id !== req.params.id) {
