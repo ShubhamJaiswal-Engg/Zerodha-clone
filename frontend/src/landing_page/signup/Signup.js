@@ -160,7 +160,7 @@ function Signup() {
               isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-blue-700"
              }`}>
                <span className="inline-flex items-center justify-center gap-2">
-                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-blue-900 border-t-transparent" aria-hidden="true" />}
+                {isLoading && <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" aria-hidden="true" />}
                 {isLoading ? "Signing Up..." : "SignUp"}
               </span>
             </button>
