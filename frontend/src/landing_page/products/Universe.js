@@ -1,88 +1,106 @@
 import React from "react";
-
+import { Link } from 'react-router-dom'
+import useAuthStatus from "../auth/useAuthStatus";
 function Universe() {
+ const { isCheckingAuth, isAuthenticated } = useAuthStatus();
   return (
-    <div className="container">
-      <div className="row p-5 mt-5">
-        <div className="col">
-          <h1 className="text-center mb-4">The Zerodha Universe</h1>
-          <h4 className="text-muted mb-4 fs-6 text-center">
+    <div className="container mx-auto p-4 md:p-12 mb-16">
+      <div className="flex flex-col items-center mt-12 mb-16">
+        <div className="text-center">
+          <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-6">The StockX Universe</h1>
+          <h4 className="text-lg text-gray-600 mb-8">
             Extend your trading and investment experience even further with our
             partner platforms
           </h4>
         </div>
       </div>
-      <div className="row p-2">
-        <div className="col-4 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "50%",marginLeft:"100px" , marginBottom: "20px" }}
+            className="w-1/2 mb-6"
             alt="logo"
-            src="media/images/zerodhafundhouse.png"
+            src="media/images/stockxfundhouse.png"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
+          <p className="text-gray-500 text-sm">
             Our asset management venture
-            <br /> that is creating simple and transparent index <br />
+            <br className="hidden md:block"/> that is creating simple and transparent index <br className="hidden md:block"/>
             funds to help you save for your goals.
           </p>
         </div>
-        <div className="col-4 p-4">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "70%",marginLeft:"80px" , marginBottom: "20px" }}
+            className="w-3/5 mb-6"
             alt="logo"
             src="media/images/sensibullLogo.svg"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
-            Options trading platform that lets you <br />
-            create strategies, analyze positions, and examine <br /> data points
+          <p className="text-gray-500 text-sm">
+            Options trading platform that lets you <br className="hidden md:block"/>
+            create strategies, analyze positions, and examine <br className="hidden md:block"/> data points
             like open interest, FII/DII, and more.
           </p>
         </div>
-        <div className="col-4 p-4">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "40%", marginLeft:"100px"}}
+            className="w-2/5 mb-6"
             alt="logo"
             src="media/images/tijori.svg"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
-            Investment research platform <br />
-            that offers detailed insights on stocks, <br /> sectors, supply
+          <p className="text-gray-500 text-sm">
+            Investment research platform <br className="hidden md:block"/>
+            that offers detailed insights on stocks, <br className="hidden md:block"/> sectors, supply
             chains, and more.
           </p>
         </div>
-        <div className="col-4 p-4">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "40%",marginLeft:"110px" , marginBottom: "20px" }}
+            className="w-2/5 mb-6"
             alt="logo"
             src="media/images/streakLogo.png"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
-            Systematic trading platform <br /> that allows you to create and backtest<br />
+          <p className="text-gray-500 text-sm">
+            Systematic trading platform <br className="hidden md:block"/> that allows you to create and backtest<br className="hidden md:block"/>
             strategies without coding.
           </p>
         </div>
-        <div className="col-4 p-4">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "60%",marginLeft:"80px" , marginBottom: "10px" }}
+            className="w-1/2 mb-6"
             alt="logo"
             src="media/images/smallcaseLogo.png"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
-            Thematic investing platform<br /> that helps you invest in diversified<br />
+          <p className="text-gray-500 text-sm">
+            Thematic investing platform<br className="hidden md:block"/> that helps you invest in diversified<br className="hidden md:block"/>
             baskets of stocks on ETFs.
           </p>
         </div>
-        <div className="col-4 p-4">
+        <div className="flex flex-col items-center text-center p-4">
           <img
-            style={{ width: "40%",marginLeft:"100px" , marginBottom: "10px" }}
+            className="w-2/5 mb-6"
             alt="logo"
             src="media/images/ditto-logo.png"
           />
-          <p style={{ fontSize: "12px" }} className="text-muted text-center">
-            Personalized advice on life<br /> and health insurance. No spam<br /> and no
+          <p className="text-gray-500 text-sm">
+            Personalized advice on life<br className="hidden md:block"/> and health insurance. No spam<br className="hidden md:block"/> and no
             mis-selling.
           </p>
         </div>
-          <button className='btn btn-primary p-2 fs-5 mt-4 mb-5' style={{width:"20%", margin:"0 auto"}} >Sign Up for Free</button>
+      </div>
+      <div className="flex justify-center mt-12">
+        {isCheckingAuth ? null : isAuthenticated ? (
+                    <a
+                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-lg mb-12'
+                        href="http://localhost:3001"
+                    >
+                        Go to Dashboard
+                    </a>
+                ) : (
+                    <Link
+                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded text-lg mb-12'
+                        to="/signup"
+                    >
+                        Sign Up for Free
+                    </Link>
+                )}
       </div>
     </div>
   );
