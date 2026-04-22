@@ -22,7 +22,7 @@ function ProductPage() {
       <RightSection
       imageURL="media/images/console.png"   
       learnMore="Learn more"
-      productDescription="The central dashboard for your Zerodha account. Gain insights into your trades and investments with in-depth reports and visualisations."
+      productDescription="The central dashboard for your StockX account. Gain insights into your trades and investments with in-depth reports and visualisations."
       ProductName="Console"
     />
       <LeftSection
@@ -49,7 +49,7 @@ function ProductPage() {
         ProductName="Kite"
         appStore="media/images/appstoreBadge.svg"
       />
-      <h4 className="text-muted text-center mb-5">Want to know more about our technology stack? Check out the <Link style={{textDecoration:"none"}}>Zerodha.tech </Link> blog.</h4>
+      <h4 className="text-gray-600 text-center text-lg md:text-xl mb-16 px-4">Want to know more about our technology stack? Check out the <Link to="#" className="text-blue-500 hover:underline">StockX.tech </Link> blog.</h4>
 
       <Universe/>
 
