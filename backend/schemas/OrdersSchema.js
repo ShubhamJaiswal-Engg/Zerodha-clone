@@ -6,7 +6,7 @@ const OrdersSchema = new Schema({
     price: Number,
     mode:String,
     uid: String,
-    time: Date,
+    time: { type: Date, default: Date.now },
 })
 
 module.exports = {OrdersSchema};
