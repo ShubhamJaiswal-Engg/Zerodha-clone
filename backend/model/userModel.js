@@ -14,14 +14,23 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Your password is required"],
   },
+
+  resetOtp: { 
+    type: String, default: '' 
+  },
+  resetOtpExpiresAt: { 
+    type: Number, default: 0 
+  },
   createdAt: {
     type: Date,
     default: new Date(),
   },
 });
 
-userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 12);
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
 });
 
 module.exports = mongoose.model("User", userSchema);
