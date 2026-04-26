@@ -8,7 +8,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./Routes/AuthRoute");
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001" ];
 app.use(cors({
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin)){
@@ -20,6 +21,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
+// app.use(cors());
 
 app.use(cookieParser());
 app.use(bodyParser.json());
