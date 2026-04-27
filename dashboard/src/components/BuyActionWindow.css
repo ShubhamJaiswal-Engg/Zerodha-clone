@@ -218,4 +218,51 @@
     background: #9b9b9b;
     color: #fff;
   }
-  
+
+  @media (max-width: 768px) {
+    .container {
+      width: calc(100% - 16px);
+      height: auto;
+      max-height: 90vh;
+      left: 8px;
+      bottom: 8px;
+      border-radius: var(--radius);
+    }
+
+    .regular-order {
+      padding: 12px 14px;
+      padding-bottom: 18px;
+    }
+
+    .order-validity {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    .inputs {
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    .inputs fieldset {
+      margin-right: 0;
+    }
+
+    .buttons {
+      top: 0;
+      padding: 12px 14px 16px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .buttons > div {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+  }
