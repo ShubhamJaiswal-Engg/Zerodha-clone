@@ -1,15 +1,18 @@
-import React, {useContext, useState,useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
+import { toast } from "react-toastify";
 
 
 import "./BuyActionWindow.css";
 
 const SellActionWindow = ({ uid, price, percent }) => {
   const { closeSellWindow, setOrderChecker } = useContext(GeneralContext); 
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [stockQuantity, setStockQuantity] = useState(1);
   const [stockPrice, setStockPrice] = useState(typeof price === "number" ? price : 0.0);
 
@@ -17,19 +20,41 @@ const SellActionWindow = ({ uid, price, percent }) => {
       setStockPrice(price);
     },[price])
     
-  const handleSellClick = () => {
-    axios.post("http://localhost:3002/newOrder", {
-      name: uid,
-      qty: stockQuantity,
-      price: stockPrice,
-      mode: "SELL",
-    });
-    setOrderChecker(prev => !prev);
-    closeSellWindow();
+  const navigateAfterClose = () => {
+    if (pathname === "/marketwatch") {
+      navigate("/marketwatch", { replace: true });
+    }
+     else {
+      navigate(pathname, { replace: true });
+    }
+  };
+
+  const handleSellClick = async () => {
+    try {
+      await axios.post("http://localhost:3002/newOrder", {
+        name: uid,
+        qty: stockQuantity,
+        price: stockPrice,
+        mode: "SELL",
+      });
+      toast.success(`Sell order placed for ${uid}`);
+      setOrderChecker((prev) => !prev);
+      closeSellWindow();
+      navigateAfterClose();
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Request failed";
+      console.error("Sell order failed:", error);
+      alert(message);
+    }
   };
 
   const handleCancelClick = () => {
     closeSellWindow();
+    navigateAfterClose();
   };
 
   return (
@@ -65,12 +90,12 @@ const SellActionWindow = ({ uid, price, percent }) => {
         <span>Price: {typeof price === "number" ? `₹${price}` : "-"}</span>
         <span>Percent: {percent || "-"}</span>
         <div>
-          <Link className="btn btn-blue" onClick={handleSellClick}>
+          <button type="button" className="btn btn-blue" onClick={handleSellClick}>
             Sell
-          </Link>
-          <Link to="" className="btn btn-grey" onClick={handleCancelClick}>
+          </button>
+          <button type="button" className="btn btn-grey" onClick={handleCancelClick}>
             Cancel
-          </Link>
+          </button>
         </div>
       </div>
     </div>
