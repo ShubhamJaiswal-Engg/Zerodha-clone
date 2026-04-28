@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import Apps from "./Apps";
 import Funds from "./Funds";
@@ -10,10 +10,21 @@ import Positions from "./Positions";
 import Summary from "./Summary";
 import WatchList from "./WatchList";
 
+
 const Dashboard = () => {  
+  const { pathname } = useLocation();
+
+  if (pathname === "/marketwatch") {
+    return (
+      <div className="marketwatch-page">
+        <WatchList />
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard-container">
-      <WatchList/>
+        <WatchList/>
       <div className="content">
         <Routes>
           <Route exact path="/" element={<Summary />} />
