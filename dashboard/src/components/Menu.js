@@ -1,22 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 // import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useContext } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 import GeneralContext from "./GeneralContext";
 import axios from "axios";
 
-
-const Menu = () => {
+const Menu = ({ pageTitle = "Dashboard" }) => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
- 
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  // const [mobileWatchList, setMobileWatchList] = useState(false);
+
+
   const context = useContext(GeneralContext);
 
+  const closeMobileNav = () => setIsMobileNavOpen(false);
+
   const handleMenuClick = (index) => {
+    // console.log(mobileWatchList)
     setSelectedMenu(index);
+  };
+
+  const handleMobileNavLinkClick = (index) => {
+    handleMenuClick(index);
+    closeMobileNav();
   };
 
   const handleProfileClick = () => {
@@ -36,6 +47,17 @@ const Menu = () => {
     return () => document.removeEventListener("mousedown", onDocumentClick);
   }, [isProfileDropdownOpen]);
 
+  useEffect(() => {
+    if (!isMobileNavOpen) return;
+
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isMobileNavOpen]);
+
   const logOut = async () => {
     try {
       // Token cookie is httpOnly, so it must be cleared by the server.
@@ -51,12 +73,22 @@ const Menu = () => {
       console.error(e);
     } finally {
       localStorage.removeItem("username");
+      sessionStorage.removeItem("dashboard_welcome_shown");
       window.location.replace("http://localhost:3000");
     }
   };
+
+  const avatarText =
+    context.userName && context.userName.length >= 2
+      ? context.userName[0].toUpperCase() +
+        context.userName[context.userName.length - 1].toUpperCase()
+      : "U";
+
   return (
     <div className="menu-container">
-      <img src="logo.png" alt="Zerodha" style={{ width: "50px" }} />
+      <img src="logo.png" alt="StockX" className="menu-logo" />
+      <div className="mobile-page-title">{pageTitle}</div>
+
       <div className="menus">
         <ul>
           <li>
@@ -74,8 +106,7 @@ const Menu = () => {
             <Link
               style={{ textDecoration: "none" }}
               to="/orders"
-              onClick={() => {handleMenuClick(1);
-              }}
+              onClick={() => handleMenuClick(1)}
             >
               <p className={selectedMenu === 1 ? activeMenuClass : menuClass}>
                 Orders
@@ -107,7 +138,7 @@ const Menu = () => {
           <li>
             <Link
               style={{ textDecoration: "none" }}
-              to="funds"
+              to="/funds"
               onClick={() => handleMenuClick(4)}
             >
               <p className={selectedMenu === 4 ? activeMenuClass : menuClass}>
@@ -130,10 +161,7 @@ const Menu = () => {
 
         <div className="profile-wrapper" id="profile-wrapper">
           <div className="profile" onClick={handleProfileClick}>
-            <div className="avatar">
-              {context.userName[0].toUpperCase() +
-                context.userName[context.userName.length - 1].toUpperCase()}
-            </div>
+            <div className="avatar">{avatarText}</div>
             <p className="username">{context.userName}</p>
             <span className="profile-caret">
               {isProfileDropdownOpen ? (
@@ -153,16 +181,6 @@ const Menu = () => {
                 ) : null}
               </div>
 
-              {/* <div className="profile-dropdown-divider" /> */}
-
-              {/* <a
-                className="profile-dropdown-item"
-                href="http://localhost:3000/support"
-              >
-                <HelpOutlineIcon fontSize="small" />
-                <span>Need help?</span>
-              </a> */}
-
               <div className="profile-dropdown-divider" />
 
               <button
@@ -177,6 +195,119 @@ const Menu = () => {
           )}
         </div>
       </div>
+
+      {isMobileNavOpen ? (
+        <button
+          type="button"
+          className="nav-overlay"
+          aria-label="Close navigation"
+          onClick={closeMobileNav}
+        />
+      ) : null}
+
+      <aside
+        className={
+          isMobileNavOpen ? "mobile-drawer pl-4 pr-4 sm:pl-6 sm:pr-6 mobile-drawer--open mobile-drawer--openn" : "mobile-drawer"
+        }
+        aria-hidden={!isMobileNavOpen}
+      >
+        <div className="mobile-drawer-header">
+          <div className="mobile-drawer-profile">
+            {/* <div className="profile-wrapper" id="profile-wrapper"> */}
+          <div className="profile">
+            <div className="avatar">{avatarText}</div>
+            {/* <div className="avatar">{avatarText}</div> */}
+            <div>
+              <div className="mobile-drawer-name">{context.userName}</div>
+              {context.userEmail ? (
+                <div className="mobile-drawer-email">{context.userEmail}</div>
+              ) : null}
+            </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="mobile-drawer-close"
+            aria-label="Close navigation"
+            onClick={closeMobileNav}
+          >
+            <CloseIcon fontSize="small" />
+          </button>
+        </div>
+
+        <nav className="mobile-drawer-nav">
+          <Link
+            to="/marketwatch"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(0)}
+          >
+            Marketwatch
+          </Link>
+          <Link
+            to="/"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(1)}
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/orders"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(2)}
+          >
+            Orders
+          </Link>
+          <Link
+            to="/holdings"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(3)}
+          >
+            Holdings
+          </Link>
+          <Link
+            to="/positions"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(4)}
+          >
+            Positions
+          </Link>
+          <Link
+            to="/funds"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(5)}
+          >
+            Funds
+          </Link>
+          <Link
+            to="/apps"
+            className="mobile-drawer-link"
+            onClick={() => handleMobileNavLinkClick(6)}
+          >
+            Apps
+          </Link>
+        </nav>
+
+        <div className="mobile-drawer-footer">
+          <button
+            type="button"
+            className="mobile-drawer-logout"
+            onClick={logOut}
+          >
+            <LogoutIcon fontSize="small" />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+      <button
+        type="button"
+        className="menu-toggle"
+        aria-label="Open navigation"
+        aria-expanded={isMobileNavOpen}
+        onClick={() => setIsMobileNavOpen(true)}
+      >
+        <MenuIcon fontSize="medium" />
+      </button>
     </div>
   );
 };
