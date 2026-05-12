@@ -22,34 +22,40 @@ const Orders = () => {
         {allOrders.length > 0 ? (
           <div className="order-table">
             <table>
-              <tr>
-                <th>Name</th>
-                <th>Qty.</th>
-                <th>Price</th>
-                <th>Mode</th>
-                <th>Time</th>
-              </tr>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Qty.</th>
+                  <th>Price</th>
+                  <th>Mode</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
 
-              {allOrders.map((orders, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{orders.name}</td>
-                    <td>{orders.qty}</td>
-                    <td>{orders.price.toFixed(2)}</td>
-                    <td>{orders.mode}</td>
-                    <td style={{ fontSize: "15px",fontWeight: "500" }}>
-                      {(() => {
-                        const date = new Date(orders.time);
-                        const day = String(date.getDate()).padStart(2, "0");
-                        const month = String(date.getMonth() + 1).padStart(2, "0");
-                        const year = date.getFullYear();
-                        const time = date.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" });
-                        return `${day}-${month}-${year} ${time}`;
-                      })()}
-                    </td>
-                  </tr>
-                );
-              })}
+              <tbody>
+                {allOrders.map((orders, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{orders.name}</td>
+                      <td>{orders.qty}</td>
+                      <td>{orders.price.toFixed(2)}</td>
+                      <td>{orders.mode}</td>
+                      <td style={{ fontSize: "15px", fontWeight: "500" }}>
+                        {(() => {
+                          const date = new Date(orders.time);
+                          const day = String(date.getDate()).padStart(2, "0");
+                          const month = String(date.getMonth() + 1).padStart(2, "0");
+                          const year = date.getFullYear();
+                          const time = date.toLocaleTimeString("en-IN", {
+                            timeZone: "Asia/Kolkata",
+                          });
+                          return `${day}-${month}-${year} ${time}`;
+                        })()}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
           </div>
         ) : (
