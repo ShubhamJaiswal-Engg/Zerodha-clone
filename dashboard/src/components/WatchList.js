@@ -71,20 +71,42 @@ const WatchList = () => {
 export default WatchList;
 
 const WatchListItem = ({ stock }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  // null = default behavior (hover actions). "info" = show price/percent/arrow only. "actions" = show buttons only.
+  const [clickMode, setClickMode] = useState(null);
 
-  const [showWatchlistActions, setShowWatchlistActions] = useState(false);
+  const showWatchlistActions = clickMode === "actions" || (clickMode === null && isHovered);
 
-  const handleMouseEnter = (e) => {
-    setShowWatchlistActions(true);
+  const handleMouseEnter = () => {
+    if (clickMode !== null) return;
+    setIsHovered(true);
   };
 
-  const handleMouseLeave = (e) => {
-    setShowWatchlistActions(false);
+  const handleMouseLeave = () => {
+    if (clickMode !== null) return;
+    setIsHovered(false);
+  };
+
+  const handleItemClick = () => {
+    setClickMode((prev) => {
+      if (prev === null) return "info";
+      return prev === "info" ? "actions" : "info";
+    });
+    setIsHovered(false);
   };
 
   return (
-    <li onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="item">
+    <li
+      className={
+        `watchlist-item${showWatchlistActions ? " watchlist-item--actions" : ""}${
+          clickMode !== null ? " watchlist-item--clicked" : ""
+        }`
+      }
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleItemClick}
+    >
+      <div className="item pt-2 pb-2">
         <p className={stock.isDown ? "down" : "up"}>{stock.name}</p>
         <div className="item-info">
           <span className="percent">{stock.percent}</span>
@@ -104,12 +126,18 @@ const WatchListItem = ({ stock }) => {
 const WatchListActions = ({ stock }) => {
   const generalContext = useContext(GeneralContext);
 
-  const handleBuyClick = () => {
+  const handleBuyClick = (e) => {
+    e.stopPropagation();
     generalContext.openBuyWindow(stock);
   };
 
-  const handleSellClick = () => {
+  const handleSellClick = (e) => {
+    e.stopPropagation();
     generalContext.openSellWindow(stock);
+  };
+
+  const handleActionClick = (e) => {
+    e.stopPropagation();
   };
 
   return (
@@ -138,12 +166,12 @@ const WatchListActions = ({ stock }) => {
           TransitionComponent={Grow}
           
         >
-          <button className="action">
+          <button className="action" onClick={handleActionClick}>
             <BarChartOutlined className="icon" />
           </button>
         </Tooltip>
         <Tooltip title="More" placement="top" arrow TransitionComponent={Grow}>
-          <button className="action">
+          <button className="action" onClick={handleActionClick}>
             <MoreHoriz className="icon" />
           </button>
         </Tooltip>
